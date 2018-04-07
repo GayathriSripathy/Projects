@@ -1,0 +1,133 @@
+---
+title: "LA Crime Analysis"
+author: "Gayathri Sripathy"
+date: "Dec 5, 2017"
+output: 
+  html_document:
+    number_sections: yes
+    theme: readable
+    highlight: tango
+    toc: yes
+    fig_width: 15
+    fig_height: 10
+---
+```{r}
+library(ggplot2)
+library(dplyr)
+library("cluster")
+library("factoextra")
+library("magrittr")
+library(gridExtra)
+library(purrr)
+library(readr)
+library(ClustOfVar)
+library(HSAUR)
+library(dunn.test)
+library(clValid)
+
+library(readr)
+count1 <- read.csv(file="count1.csv")
+View(count1)
+my_data <- count1
+
+
+k2 <- kmeans(my_data[,-c(1)], centers = 2, nstart = 25)
+p1 <- fviz_cluster(k2, geom = "text", data = my_data[,-c(1)]) + ggtitle("k = 2")
+
+k3 <- kmeans(my_data[,-c(1)], centers = 3, nstart = 25)
+p2 <- fviz_cluster(k3, geom = "text",  data = my_data[,-c(1)]) + ggtitle("k = 3")
+
+k4 <- kmeans(my_data[,-c(1)], centers = 4, nstart = 25)
+p3 <- fviz_cluster(k4, geom = "text",  data = my_data[,-c(1)]) + ggtitle("k = 4")
+
+k5 <- kmeans(my_data[,-c(1)], centers = 5, nstart = 25)
+p4 <- fviz_cluster(k5, geom = "text",  data = my_data[,-c(1)]) + ggtitle("k = 5")
+
+k6 <- kmeans(my_data[,-c(1)], centers = 6, nstart = 25)
+p5 <- fviz_cluster(k6, geom = "text",  data = my_data[,-c(1)]) + ggtitle("k = 6")
+
+k7 <- kmeans(my_data[,-c(1)], centers = 7, nstart = 25)
+p6 <- fviz_cluster(k7, geom = "text",  data = my_data[,-c(1)]) + ggtitle("k = 7")
+
+k8 <- kmeans(my_data[,-c(1)], centers = 8, nstart = 25)
+p7 <- fviz_cluster(k8, geom = "text",  data = my_data[,-c(1)]) + ggtitle("k = 8")
+
+k9 <- kmeans(my_data[,-c(1)], centers = 9, nstart = 25)
+p8 <- fviz_cluster(k9, geom = "text",  data = my_data[,-c(1)]) + ggtitle("k = 9")
+
+k10 <- kmeans(my_data[,-c(1)], centers = 10, nstart = 25)
+p9 <- fviz_cluster(k10, geom = "text",  data = my_data[,-c(1)]) + ggtitle("k = 10")
+
+
+library(gridExtra)
+grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, p9, nrow = 4)
+
+fviz_nbclust(my_data[,2:7], kmeans, method = "silhouette")
+
+set.seed(123)
+gap_stat <- clusGap(my_data[,2:7], FUN = kmeans, nstart = 25,
+                    K.max = 10, B = 50)
+# Print the result
+print(gap_stat, method = "firstmax")
+# fviz_gap_stat(gap_stat)
+
+# Compute k-means clustering with k = 3
+
+set.seed(123)
+final <- kmeans(my_data[,2:7], 3, nstart = 25)
+print(final)
+
+
+fviz_cluster(final, data = my_data[,2:7])
+
+# Cluster means:
+#   Assault BURGLARY Child Abuse Criminal Threats     Rape Vehicle Theft
+# 1 298.7273 1462.636    37.18182         180.9091 40.36364      485.9091
+# 2 412.0000  920.000    61.00000         219.6000 40.20000      356.6000
+# 3 824.8000 1179.600    66.40000         344.2000 57.40000      304.2000
+
+# Clustering vector:
+# [1] 3 3 1 2 2 2 1 2 1 3 1 1 1 2 3 3 1 1 1 1 1
+
+# Within cluster sum of squares by cluster:
+#   [1] 322596.7 207003.2 352312.0
+# (between_SS / total_SS =  71.9 %)
+
+#K - medoid
+k4 <- pam(my_data[,-c(1)], k=3, diss=F)
+plot(k4, which.plots=1)
+
+k4$clustering
+k4$silinfo$avg.width
+k4.clust <- lapply(1:2, function(nc) row.names(my_data[,-c(1)])[k4$clustering==nc]) 
+
+clusplot(my_data, k4$cluster)
+
+my.k.choices <- 2:8
+avg.sil.width <- rep(0, times=length(my.k.choices))
+for (ii in (1:length(my.k.choices)) ){
+  avg.sil.width[ii] <- pam(my_data[,-c(1)], k=my.k.choices[ii])$silinfo$avg.width
+}
+print( cbind(my.k.choices, avg.sil.width) )
+
+#Hierarchical Clustering
+la.dist = dist(my_data[,-c(1)])
+la.hclust = hclust(la.dist)
+plot(la.hclust,labels=my_data$Region,main='Default from hclust')
+
+#Silhouette
+km    <- kmeans(my_data[,-c(1)],3)
+dissE <- daisy(my_data[,-c(1)]) 
+dE2   <- dissE^2
+sk2   <- silhouette(km$cl, dE2)
+plot(sk2, col = km$size)
+
+table(final$cluster, k4$cluster)
+
+#Using clValid
+clmethods <- c("hierarchical","kmeans","pam")
+clust_clvalid <- clValid(my_data[,-c(1)], nClust = 2:15,
+              clMethods = clmethods, validation = "internal")
+# Summary
+summary(clust_clvalid)
+```
