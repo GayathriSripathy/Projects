@@ -30,7 +30,7 @@ library(psych)
 library(knitr)
 library(scatterplot3d)
 
-# Set working directory and import CD_additional_balanced.csv file
+# Set Working directory and import CD_additional_balanced.csv file
 setwd("C:/Users/gayat/Desktop/Data Mining/Assignment 2")
 bank <- read.csv(file = "CD_additional_modified.csv", stringsAsFactors = TRUE)
 
