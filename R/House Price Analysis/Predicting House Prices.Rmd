@@ -60,7 +60,7 @@ for(i in 1:nrow(test1)){
   sale_price[i] <- 0
 }
 
-#SalePrice of train data is strongly skewed as can be seen in the below histogram/
+#Sale Price of train data is strongly skewed as can be seen in the below histogram/
 hist(train1$SalePrice,xlab="Sale Price",main = "Sale Price")
 
 #log transforming it to get a better distribution
