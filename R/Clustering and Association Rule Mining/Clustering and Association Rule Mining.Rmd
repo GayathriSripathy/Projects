@@ -134,7 +134,7 @@ summary(Dept_baskets)
 inspect(Dept_baskets[1:15])
 ```
 
-## Transaction frequency in percentage
+## Transaction Frequency in percentage
 ```{r - Transaction frequency in percentage, warning=FALSE, message=FALSE}
 # Using the itemFrequencyPlot command to plot the most frequent 15 items in the descending order of transaction frequency in percentage
 itemFrequency(Dept_baskets[1:15])
