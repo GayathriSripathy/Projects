@@ -12,7 +12,7 @@ output:
     fig_height: 10
 ---
 
-# Set up, data import and inspections
+# Set up, Data import and inspections
 ## Loading Packages & import data
 ```{r - Set up, data import and inspections, warning=FALSE, message=FALSE}
 
