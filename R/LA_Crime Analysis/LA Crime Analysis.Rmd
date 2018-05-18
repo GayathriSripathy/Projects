@@ -71,7 +71,7 @@ gap_stat <- clusGap(my_data[,2:7], FUN = kmeans, nstart = 25,
 print(gap_stat, method = "firstmax")
 # fviz_gap_stat(gap_stat)
 
-# Compute k-means clustering with k = 3
+# Compute k-means Clustering with k = 3
 
 set.seed(123)
 final <- kmeans(my_data[,2:7], 3, nstart = 25)
