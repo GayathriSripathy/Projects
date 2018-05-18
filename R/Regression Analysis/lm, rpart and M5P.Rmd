@@ -32,7 +32,7 @@ output:
 # Load packages after they have been installed
 # Package loading. Install the following packages before running this chunk or knitting this program.
 
-# Rmarkdown, rpart, rweka, caret, rminer, matrixStats, psych and knitr packages
+# Rmarkdown, rpart, rweka, caret, rminer, matrixStats, psych and knitr Packages
 library(rmarkdown)
 library(rpart)
 library(RWeka)
