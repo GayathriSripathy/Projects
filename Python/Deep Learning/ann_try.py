@@ -46,6 +46,7 @@ classifier = Sequential()
 
 # Adding the input layer and the hidden layer
 classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu', input_shape = (11,)))
+
 # The above command adds one input layer and the first hidden layer
 # init - to initialize the weights, units - no.of hidden nodes, input_shape = no of input nodes
 # activation - rectifier function for the hidden layer and sigmoid function for the output layer
