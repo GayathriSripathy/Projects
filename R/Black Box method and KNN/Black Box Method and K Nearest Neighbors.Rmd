@@ -122,6 +122,7 @@ model_1 <- MLP(train_target ~ .,data = train_input)
 
 # Evaluating the model performance on the training set and testing set.
 predictions_base_test <- predict(model_1, test_input)
+
 # compare the correlation between acutal and predicted expenses in test data
 summary(predictions_base_test)
 summary(test_target)
